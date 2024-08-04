@@ -42,20 +42,25 @@ postRouter.post('/', authMiddleware, async (_request, _response) => {
 });
 
 postRouter.post('/qna', authMiddleware, async (_request, _response) => {
-    const body = _request.body;
+    try{
+        const body = _request.body;
 
-    const question = await questionModel.findById(body._id);
-    const responses = await responseModel.find({
-       questionId: body._id 
-    });
+        const question = await questionModel.findById(body._id);
+        const responses = await responseModel.find({
+        questionId: body._id 
+        });
 
-    console.log(question);
-    console.log(responses);
+        console.log(question);
+        console.log(responses);
 
-    return _response.status(200).json({
-        question,
-        responses 
-    });
+        return _response.status(200).json({
+            question,
+            responses 
+        });
+    } catch(e) { 
+        return _response.json(e)
+    }
+
 });
 
 module.exports = postRouter
